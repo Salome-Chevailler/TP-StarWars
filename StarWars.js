@@ -34,3 +34,43 @@ function listeFilms(event) {
       console.log(error);
     });
 }
+
+// ====== Afficher la liste des personnes correspondant au critère ========
+// -- gestion du clicc sur le bouton
+// cible : le bouton d'id "pers"
+// event : click
+// action : liste des personnes correspondant au critère de recherche
+document.getElementById("pers").addEventListener("click", listePers);
+
+// ====== la fonction qui récupère les films et les affiche
+function listePers(event) {
+  // récupérer le critère de recherche
+  let critere = document.getElementById("nom").value;
+
+  const url = "https://swapi.dev/api/people/?search="; // l’url de la ressource
+
+  let fetchOptions = { method: "GET" }; // les options de l'API fetch
+
+  // exécuter la requête AJAX
+  fetch(url + critere, fetchOptions)
+    .then((response) => {
+      return response.json();
+    })
+    .then((dataJSON) => {
+      // dataJSON = les données renvoyées
+      console.log(dataJSON);
+      let personnes = dataJSON.results;
+      // ici le traitement des données …
+      // ajouter une <option></option> pour chaque personne
+      let texteHTML = "";
+      for (let p of personnes) {
+        texteHTML = texteHTML + "<option>" + p.name + "</option>";
+      }
+      // pour l'affichage dans le navigateur
+      document.getElementById("personnes").innerHTML = texteHTML;
+    })
+    .catch((error) => {
+      // gestion des erreurs
+      console.log(error);
+    });
+}
